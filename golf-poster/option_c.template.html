@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chisipite Boat Club – Golf Day Fundraiser (Option C)</title>
+<meta name="hz:slide-selector" content=".slide">
+<meta name="hz:canvas-width" content="1200">
+<meta name="hz:canvas-height" content="1600">
+{{FONTS}}
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 1600px; }
+  .slide { position: relative; width: 1200px; height: 1600px; overflow: hidden; background: #0b0f0c;
+    font-family: "barlow-condensed", "Barlow Condensed", sans-serif; color: #fff; }
+  .abs { position: absolute; }
+
+  .hero { left: -230px; top: -330px; width: 1620px; height: 1200px; object-fit: cover; }
+  .shade { left: 0; top: 0; width: 1200px; height: 900px;
+    background: linear-gradient(180deg, rgba(11,15,12,0.75) 0%, rgba(11,15,12,0.05) 30%, rgba(11,15,12,0.15) 60%, #0b0f0c 100%); }
+
+  /* lime diagonal band with headline */
+  .band { left: -100px; top: 720px; width: 1400px; height: 300px; background: #a6e22e; transform: rotate(-6deg); }
+  .band2 { left: -100px; top: 1010px; width: 1400px; height: 16px; background: #f5a623; transform: rotate(-6deg); }
+  .title { left: 40px; top: 718px; width: 1120px; transform: rotate(-6deg); font-weight: 900; font-style: italic; font-size: 260px;
+    line-height: 1; letter-spacing: -4px; color: #0b0f0c; white-space: nowrap; text-align: center; }
+  .outline { left: 70px; top: 640px; font-weight: 900; font-style: italic; font-size: 96px; line-height: 1; letter-spacing: 14px;
+    color: #ffffff; text-shadow: 0 6px 20px rgba(0,0,0,0.6); transform: rotate(-6deg); white-space: nowrap; }
+
+  .logo { left: 40px; top: 34px; width: 220px; height: 212px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+  .topline { right: 48px; top: 56px; text-align: right; font-weight: 800; font-style: italic; font-size: 34px; letter-spacing: 6px; line-height: 1.15; }
+  .topline span { color: #a6e22e; }
+
+  /* race card */
+  .card-h { left: 60px; top: 1068px; font-weight: 800; font-style: italic; font-size: 30px; letter-spacing: 8px; color: #a6e22e; }
+  .card { left: 60px; top: 1112px; width: 1080px; border-top: 3px solid #a6e22e; }
+  .r { display: flex; align-items: center; height: 66px; border-bottom: 1px solid rgba(255,255,255,0.18); }
+  .lane { width: 70px; font-weight: 900; font-style: italic; font-size: 34px; color: #f5a623; }
+  .lab { width: 330px; font-weight: 700; font-size: 28px; letter-spacing: 4px; color: #cfd8d1; }
+  .val { flex: 1; font-weight: 800; font-size: 38px; letter-spacing: 1px; text-transform: uppercase; }
+  .val em { font-style: italic; color: #a6e22e; }
+
+  /* golf ball on tee, right side */
+  .ball { left: 720px; top: 120px; width: 150px; height: 150px; }
+  .tr { height: 8px; border-radius: 4px; transform: rotate(-24deg); transform-origin: right center; }
+  .t1 { left: 420px; top: 236px; width: 320px; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); }
+  .t2 { left: 480px; top: 200px; width: 260px; background: linear-gradient(90deg, rgba(166,226,46,0), #a6e22e); }
+
+  .footer { left: 0; top: 1470px; width: 1200px; height: 130px; background: #a6e22e; }
+  .fl { left: 60px; top: 1492px; font-weight: 900; font-style: italic; font-size: 40px; color: #0b0f0c; letter-spacing: 3px; line-height: 86px; }
+  .fc { top: 1494px; color: #0b0f0c; font-size: 24px; font-weight: 600; line-height: 1.3; }
+  .fc b { font-weight: 900; font-size: 30px; letter-spacing: 2px; font-style: italic; }
+  .fc1 { left: 270px; } .fc2 { left: 720px; }
+</style>
+</head>
+<body>
+<div class="slide" data-canvas-width="1200" data-canvas-height="1600">
+  <img class="abs hero" src="{{img:team_full.jpg}}" alt="Chisipite rowers walking up from the water">
+  <div class="abs shade"></div>
+
+  <img class="abs logo" src="{{img:logo_white.png}}" alt="Chisipite Boat Club crest">
+  <div class="abs topline">THE SQUAD IS<br><span>TEEING OFF</span></div>
+
+  <div class="abs tr t1"></div>
+  <div class="abs tr t2"></div>
+  <svg class="abs ball" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg" cx="38%" cy="32%" r="70%"><stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#eef1ec"/><stop offset="100%" stop-color="#9fa8a0"/></radialGradient>
+      <radialGradient id="dimple" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#c9cfc8"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <clipPath id="cp"><circle cx="100" cy="100" r="96"/></clipPath>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill="url(#bg)"/>
+    <g clip-path="url(#cp)" fill="url(#dimple)">{{DIMPLES}}</g>
+  </svg>
+
+  <div class="abs outline">FUNDRAISER</div>
+  <div class="abs band"></div>
+  <div class="abs band2"></div>
+  <div class="abs title">GOLF DAY</div>
+
+  <div class="abs card-h">RACE CARD · CHISIPITE BOAT CLUB</div>
+  <div class="abs card">
+    <div class="r"><div class="lane">01</div><div class="lab">DATE</div><div class="val"><em>6 FEB 2026</em></div></div>
+    <div class="r"><div class="lane">02</div><div class="lab">VENUE</div><div class="val">Royal Harare Golf Club</div></div>
+    <div class="r"><div class="lane">03</div><div class="lab">TEAM ENTRY</div><div class="val"><em>$200</em> per team of 4 players</div></div>
+    <div class="r"><div class="lane">04</div><div class="lab">HOLE SPONSOR</div><div class="val">From <em>$200.00</em> per hole</div></div>
+    <div class="r"><div class="lane">05</div><div class="lab">ALSO AVAILABLE</div><div class="val">Gin tents &amp; other areas</div></div>
+  </div>
+
+  <div class="abs footer"></div>
+  <div class="abs fl">CONTACT</div>
+  <div class="abs fc fc1"><b>TENDAI NYAMANGARA</b><br>0772 285 551 &nbsp;|&nbsp; tnyamangara@gmail.com</div>
+  <div class="abs fc fc2"><b>SLU MUNYORO</b><br>0772 149 253 &nbsp;|&nbsp; silungelwe.munyoro@gmail.com</div>
+</div>
+</body>
+</html>

@@ -1,5 +1,7 @@
-import base64, math, re, sys
-t=open('poster.template.html').read()
+import base64, re, sys
+src=sys.argv[1] if len(sys.argv)>1 else 'poster.template.html'
+out=sys.argv[2] if len(sys.argv)>2 else 'poster'
+t=open(src).read()
 d=[]
 for row in range(-1,16):
     for col in range(-1,16):
@@ -10,5 +12,5 @@ def img(m):
     n=m.group(1); mime='image/png' if n.endswith('png') else 'image/jpeg'
     return f'data:{mime};base64,'+base64.b64encode(open('web/'+n,'rb').read()).decode()
 t=re.sub(r'\{\{img:([^}]+)\}\}',img,t)
-open('poster_express.html','w').write(t.replace('{{FONTS}}','<link rel="stylesheet" href="https://use.typekit.net/rhi5gla.css">'))
-open('poster_preview.html','w').write(t.replace('{{FONTS}}','<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=block">'))
+open(out+'_express.html','w').write(t.replace('{{FONTS}}','<link rel="stylesheet" href="https://use.typekit.net/rhi5gla.css">'))
+open(out+'_preview.html','w').write(t.replace('{{FONTS}}','<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=block">'))
