@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chisipite Boat Club – Golf Day Fundraiser (Option D)</title>
+<meta name="hz:slide-selector" content=".slide">
+<meta name="hz:canvas-width" content="1200">
+<meta name="hz:canvas-height" content="1600">
+{{FONTS}}
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 1600px; }
+  .slide { position: relative; width: 1200px; height: 1600px; overflow: hidden; background: #062a1a;
+    font-family: "barlow-condensed", "Barlow Condensed", sans-serif; color: #fff; }
+  .abs { position: absolute; }
+
+  .hero { left: 0; top: 0; width: 1200px; height: 1600px; object-fit: cover; object-position: 50% 30%; }
+  .shade-top { left: 0; top: 0; width: 1200px; height: 330px; background: linear-gradient(180deg, rgba(4,28,17,0.9), rgba(4,28,17,0)); }
+  .shade-bot { left: 0; top: 700px; width: 1200px; height: 900px;
+    background: linear-gradient(180deg, rgba(6,42,26,0) 0%, rgba(6,42,26,0.85) 28%, #062a1a 48%); }
+
+  .logo { left: 48px; top: 36px; width: 220px; height: 212px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+  .tag { right: 56px; top: 64px; padding: 12px 24px; background: #a6e22e; color: #062a1a; font-weight: 800; font-style: italic;
+    font-size: 28px; letter-spacing: 4px; transform: skewX(-12deg); }
+  .tag2 { right: 56px; top: 126px; font-weight: 700; font-size: 24px; letter-spacing: 6px; text-align: right; color: #fff; }
+
+  /* race the ball */
+  .ball { left: 1035px; top: 405px; width: 120px; height: 120px; }
+  .tr { height: 8px; border-radius: 4px; transform-origin: right center; }
+  .t1 { left: 780px; top: 478px; width: 270px; transform: rotate(-11deg); background: linear-gradient(90deg, rgba(255,255,255,0), #fff); }
+  .t2 { left: 820px; top: 448px; width: 220px; transform: rotate(-11deg); background: linear-gradient(90deg, rgba(166,226,46,0), #a6e22e); }
+  .t3 { left: 840px; top: 506px; width: 190px; transform: rotate(-11deg); background: linear-gradient(90deg, rgba(245,166,35,0), #f5a623); }
+  .wake1 { left: -60px; top: 640px; width: 560px; height: 10px; background: #a6e22e; transform: skewX(-30deg) rotate(-6deg); }
+  .wake2 { left: -60px; top: 664px; width: 380px; height: 10px; background: #fff; opacity: 0.85; transform: skewX(-30deg) rotate(-6deg); }
+
+  .kicker { left: 60px; top: 870px; font-weight: 800; font-style: italic; font-size: 40px; letter-spacing: 8px; color: #a6e22e; }
+  .title { left: 44px; top: 905px; font-weight: 900; font-style: italic; font-size: 268px; line-height: 1; letter-spacing: -5px; white-space: nowrap;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+  .title span { color: #a6e22e; }
+  .sub { left: 64px; top: 1175px; font-weight: 700; font-size: 30px; letter-spacing: 9px; color: #cfe8d8; }
+
+  /* info bar */
+  .bar { left: 0; top: 1240px; width: 1200px; height: 190px; background: rgba(0,0,0,0.28); border-top: 2px solid rgba(166,226,46,0.5); border-bottom: 2px solid rgba(166,226,46,0.5); }
+  .col { top: 1262px; height: 150px; }
+  .c1 { left: 60px; width: 300px; } .c2 { left: 390px; width: 330px; }
+  .big { font-weight: 900; font-style: italic; font-size: 84px; line-height: 0.95; color: #a6e22e; }
+  .lbl { font-weight: 700; font-size: 28px; line-height: 1.05; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+  .lbl small { display: block; font-weight: 500; font-size: 21px; color: #cfe8d8; letter-spacing: 2px; }
+  .sep { top: 1268px; width: 6px; height: 140px; background: #a6e22e; transform: skewX(-14deg); }
+  .sp1 { left: 350px; } .sp2 { left: 720px; }
+  .dateblk { left: 760px; top: 1230px; width: 520px; height: 210px; background: #a6e22e; transform: skewX(-14deg); }
+  .d1 { left: 800px; top: 1246px; font-weight: 900; font-style: italic; font-size: 90px; line-height: 1; color: #062a1a; letter-spacing: -1px; }
+  .d2 { left: 802px; top: 1342px; font-weight: 800; font-size: 28px; line-height: 1.1; color: #062a1a; letter-spacing: 3px; }
+  .note { left: 60px; top: 1448px; font-weight: 600; font-size: 24px; letter-spacing: 3px; color: #f5a623; }
+
+  .footer { left: 0; top: 1500px; width: 1200px; height: 100px; background: #f5a623; }
+  .fl { left: 48px; top: 1514px; font-weight: 900; font-style: italic; font-size: 36px; color: #062a1a; letter-spacing: 3px; line-height: 72px; }
+  .fc { top: 1516px; color: #062a1a; font-size: 23px; font-weight: 600; line-height: 1.25; }
+  .fc b { font-weight: 900; font-size: 27px; letter-spacing: 2px; font-style: italic; }
+  .fc1 { left: 240px; } .fc2 { left: 720px; }
+</style>
+</head>
+<body>
+<div class="slide" data-canvas-width="1200" data-canvas-height="1600">
+  <img class="abs hero" src="{{img:sculler_full.jpg}}" alt="Chisipite sculler training at dawn">
+  <div class="abs shade-top"></div>
+  <div class="abs shade-bot"></div>
+
+  <img class="abs logo" src="{{img:logo_white.png}}" alt="Chisipite Boat Club crest">
+  <div class="abs tag">FUNDRAISER</div>
+  <div class="abs tag2">CHISIPITE BOAT CLUB</div>
+
+  <div class="abs wake1"></div>
+  <div class="abs wake2"></div>
+  <div class="abs tr t1"></div>
+  <div class="abs tr t2"></div>
+  <div class="abs tr t3"></div>
+  <svg class="abs ball" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg" cx="38%" cy="32%" r="70%"><stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#eef1ec"/><stop offset="100%" stop-color="#9fa8a0"/></radialGradient>
+      <radialGradient id="dimple" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#c9cfc8"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <clipPath id="cp"><circle cx="100" cy="100" r="96"/></clipPath>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill="url(#bg)"/>
+    <g clip-path="url(#cp)" fill="url(#dimple)">{{DIMPLES}}</g>
+  </svg>
+
+  <div class="abs kicker">PULL HARD · SWING HARDER</div>
+  <div class="abs title">GOLF <span>DAY</span></div>
+  <div class="abs sub">CHISIPITE BOAT CLUB · GOLF DAY FUNDRAISER</div>
+
+  <div class="abs bar"></div>
+  <div class="abs col c1"><div class="big">$200</div><div class="lbl">Per team<small>of 4 players</small></div></div>
+  <div class="abs sep sp1"></div>
+  <div class="abs col c2"><div class="big">$200</div><div class="lbl">Hole sponsorship<small>from $200.00 per hole</small></div></div>
+  <div class="abs dateblk"></div>
+  <div class="abs d1">6 FEB 2026</div>
+  <div class="abs d2">ROYAL HARARE<br>GOLF CLUB</div>
+  <div class="abs note">GIN TENTS &amp; OTHER AREAS ARE AVAILABLE FOR SPONSORSHIP</div>
+
+  <div class="abs footer"></div>
+  <div class="abs fl">CONTACT</div>
+  <div class="abs fc fc1"><b>TENDAI NYAMANGARA</b><br>0772 285 551 &nbsp;|&nbsp; tnyamangara@gmail.com</div>
+  <div class="abs fc fc2"><b>SLU MUNYORO</b><br>0772 149 253 &nbsp;|&nbsp; silungelwe.munyoro@gmail.com</div>
+</div>
+</body>
+</html>
