@@ -3,8 +3,25 @@
    #mode=shop         : one label per page, 106 x 81 mm (100 x 75 trim + 3 mm bleed), for print shops.
    #export            : plain label grid used for PNG export (this script does nothing). */
 (function(){
-  if (location.hash === '#export') return;
-  const mode = new URLSearchParams(location.hash.slice(1)).get('mode') || 'sheet';
+  // #...&clear (or #clear) : transparent label background, for printing on clear sticker film
+  if (/clear/.test(location.hash)) {
+    document.body.classList.add('clear');
+    const c = document.createElement('style');
+    c.textContent = 'html,body,body.clear .sheet,body.clear .label,body.clear .page,body.clear .cell{background:transparent !important;box-shadow:none !important}';
+    // White outline ("white-ink underbase") behind text and logo that sit on clear areas, so they stay readable
+    // over dark granules. On a printer without white ink the outline simply won't print.
+    const h = '.28mm';
+    const ring = [[1,0],[-1,0],[0,1],[0,-1],[.7,.7],[-.7,.7],[.7,-.7],[-.7,-.7]].map(([x,y])=>`calc(${x}*${h}) calc(${y}*${h}) 0 #fff`).join(',');
+    c.textContent += `
+      body.clear .label .content *, body.clear .label .left *, body.clear .label .top *{ text-shadow:${ring}; }
+      body.clear .label .tag, body.clear .label .nut .k{ text-shadow:none; }
+      body.clear .label .rule, body.clear .label .vr, body.clear .label .blankline{ box-shadow:0 0 0 .25mm #fff; }
+      body.clear .label .nut{ box-shadow:0 0 0 .25mm #fff, inset 0 0 0 .25mm #fff; }`;
+    document.head.appendChild(c);
+    document.querySelectorAll('.label img').forEach(i => i.src = i.getAttribute('src').replace(/\.png$/, '_clear.png'));
+  }
+  if (location.hash.startsWith('#export')) return;
+  const mode = new URLSearchParams(location.hash.slice(1)).get('mode') || 'sheet';  // e.g. #mode=shop&clear
   const W = 100, H = 75, B = 3;               // trim size + bleed (mm)
   const labels = [...document.querySelectorAll('.sheet .label')];
   document.querySelector('.sheet').remove();

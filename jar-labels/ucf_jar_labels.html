@@ -69,7 +69,7 @@
 <div class="sheet" id="sheet"></div>
 
 <script>
-if (location.hash==='#export') document.body.classList.add('export');
+if (location.hash.startsWith('#export')) document.body.classList.add('export');
 const PRODUCTS = [
   { id:'gypsum', name:'Agricultural Gypsum', short:'AG', fs:'6.4mm', type:'Soil Conditioner · Calcium & Sulphur',
     analysis:{ formula:'CaSO₄·2H₂O', chips:[['Ca','Calcium'],['S','Sulphur']] } },

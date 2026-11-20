@@ -17,3 +17,11 @@ Send `…_print-shop_bleed.pdf` and tell them: *"Finished size 100 × 75 mm, art
 The colours are RGB. Ask the shop to convert them to CMYK, or to send a proof first, if colour matching matters.
 
 Separate 300 dpi PNGs of each label (without bleed) are in `../png/`.
+
+## Clear (see-through) labels — `clear/`
+`clear/ucf_labels_option_X_CLEAR_…pdf` are the same designs with **no white background**, so the fertilizer shows through the label. Print them on **clear / transparent sticker film**.
+
+- Text and logos that sit on the clear areas have a thin **white outline** so they stay readable over dark granules (e.g. Compound C and D). That outline needs **white ink**. Ask the print shop for *"clear vinyl/BOPP labels with white ink under the white areas"*.
+- Office or home printers (inkjet or laser on clear film) **cannot print white**. The outline won't appear and navy text will be hard to read on dark products. For home printing, Option B or C works best: their text sits on solid blue panels.
+- Use **laser** clear film for laser printers and **inkjet** clear film for inkjet printers. Using the wrong type smudges.
+- Transparent PNGs (300 dpi) are in `../png/clear/`. `../clear_labels_preview.png` shows each option over dark and light granules.
