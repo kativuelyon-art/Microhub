@@ -40,7 +40,7 @@
   .nut.wide .k{ margin:0 -1mm; }
   .formula{ font-size:3.3mm; font-weight:700; color:var(--ink); }
 
-  .footer{ position:absolute; left:0; right:0; bottom:3.4mm; display:flex; align-items:center; justify-content:center; padding:0; }
+  .footer{ position:absolute; left:0; right:0; bottom:4.6mm; display:flex; align-items:center; justify-content:center; padding:0; }
   .tag{ background:var(--orange); color:#fff; font-weight:800; font-size:2.15mm; letter-spacing:.3mm; padding:.9mm 2.2mm; border-radius:5mm; text-transform:uppercase; white-space:nowrap; }
 
   .blankline{ display:inline-block; width:52mm; border-bottom:.3mm solid var(--blue-dk); height:6mm; }
@@ -117,5 +117,6 @@ function labelHTML(p){
 
 document.getElementById('sheet').innerHTML = PRODUCTS.map(labelHTML).join('');
 </script>
+<script src="print.js"></script>
 </body>
 </html>

@@ -34,14 +34,14 @@
   .grade .num{ font-size:11mm; font-weight:900; line-height:1; }
   .grade .lt{ font-size:2.3mm; font-weight:800; color:var(--orange); letter-spacing:.3mm; margin-top:.8mm; }
   .grade .sep{ font-size:8mm; font-weight:700; line-height:1.1; color:rgba(255,255,255,.45); }
-  .gl{ font-size:2mm; font-weight:700; letter-spacing:.45mm; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:1.2mm; }
+  .gl{ font-size:2.15mm; font-weight:700; letter-spacing:.45mm; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:1.2mm; }
   .formula{ font-size:3.2mm; font-weight:700; margin-left:3mm; align-self:center; color:rgba(255,255,255,.9); }
 
   .seal{ position:absolute; right:5mm; top:36mm; width:19mm; height:19mm; border-radius:50%; background:var(--orange);
          border:.8mm solid #fff; box-shadow:0 0 0 .35mm var(--orange);
          display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; z-index:2; }
   .seal b{ font-size:2.7mm; font-weight:900; letter-spacing:.15mm; }
-  .seal span{ font-size:1.55mm; font-weight:800; letter-spacing:.2mm; margin-top:.6mm; line-height:1.2; }
+  .seal span{ font-size:2.1mm; font-weight:800; letter-spacing:.2mm; margin-top:.6mm; line-height:1.2; }
 
   .blankline{ display:block; width:46mm; border-bottom:.3mm solid var(--navy); height:6mm; }
   .band .blankline{ border-color:rgba(255,255,255,.8); width:50mm; }
@@ -81,5 +81,6 @@ function label(p){
 }
 document.getElementById('sheet').innerHTML = PRODUCTS.map(label).join('');
 </script>
+<script src="print.js"></script>
 </body>
 </html>

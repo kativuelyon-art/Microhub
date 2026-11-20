@@ -21,7 +21,7 @@
 
   .left{ position:absolute; left:0; top:0; bottom:0; width:40mm; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 3mm 0 4mm; }
   .left img{ width:31mm; height:auto; }
-  .left .site{ margin-top:3mm; font-size:1.9mm; font-weight:700; letter-spacing:.5mm; color:var(--blue); text-transform:uppercase; text-align:center; }
+  .left .site{ margin-top:3mm; font-size:2.15mm; font-weight:700; letter-spacing:.5mm; color:var(--blue); text-transform:uppercase; text-align:center; }
 
   .right{ position:absolute; left:45mm; right:0; top:0; bottom:0; padding:0 4.5mm 0 3mm; color:#fff;
           display:flex; flex-direction:column; justify-content:center; }
@@ -34,11 +34,11 @@
   .dot{ width:11.5mm; height:11.5mm; border-radius:50%; background:#fff; border:.7mm solid var(--orange);
         display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--navy); line-height:1; }
   .dot b{ font-size:4.1mm; font-weight:900; }
-  .dot i{ font-style:normal; font-size:1.9mm; font-weight:800; color:var(--blue); margin-top:.4mm; }
+  .dot i{ font-style:normal; font-size:2.15mm; font-weight:800; color:var(--blue); margin-top:.4mm; }
   .dot.lg{ width:15mm; height:15mm; } .dot.lg b{ font-size:4.4mm; }
   .formula{ font-size:2.9mm; font-weight:700; margin-left:.5mm; }
 
-  .tag{ position:absolute; right:4.5mm; bottom:3.6mm; font-size:1.95mm; font-weight:800; letter-spacing:.45mm; text-transform:uppercase; color:#fff;
+  .tag{ position:absolute; right:4.5mm; bottom:4.6mm; font-size:2.15mm; font-weight:800; letter-spacing:.45mm; text-transform:uppercase; color:#fff;
         display:flex; align-items:center; gap:1.5mm; opacity:.95; }
   .tag:before{ content:''; width:5mm; height:.3mm; background:var(--orange); }
 
@@ -95,5 +95,6 @@ function label(p){
 }
 document.getElementById('sheet').innerHTML = PRODUCTS.map(label).join('');
 </script>
+<script src="print.js"></script>
 </body>
 </html>
