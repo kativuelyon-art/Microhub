@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>United Capital Fertilizer – Sample Jar Labels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Kaushan+Script&family=Tinos:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1f6fb8; --blue-dk:#174f86; --orange:#f39a1e; --red:#e2463b; --ink:#1d3557; --grey:#6b7785;
+  }
+  @page{ size:A4; margin:0; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Montserrat',Arial,sans-serif; background:#e9edf2; color:var(--ink); }
+  .sheet{ width:210mm; height:297mm; background:#fff; margin:0 auto; padding:18mm 5mm;
+          display:grid; grid-template-columns:100mm 100mm; grid-auto-rows:75mm; gap:6mm 0; justify-content:center; align-content:start; }
+  @media screen{ .sheet{ margin:24px auto; box-shadow:0 6px 30px rgba(0,0,0,.15); } }
+
+  /* ---------- LABEL ---------- */
+  .label{ position:relative; width:100mm; height:75mm; overflow:hidden; background:#fff;
+          outline:0.2mm dashed #c4ccd6; outline-offset:0; }
+  .label .bg{ position:absolute; inset:0; width:100%; height:100%; }
+  .label .content{ position:absolute; inset:0; padding:4.2mm 6mm 12mm; display:flex; flex-direction:column; align-items:center; }
+
+  .brand{ display:flex; align-items:center; gap:2.6mm; margin-top:.4mm; }
+  .brand svg.logo{ width:17mm; height:auto; flex:none; }
+  .wordmark{ line-height:1; text-align:left; }
+  .wordmark .uc{ font-weight:800; font-size:4.3mm; letter-spacing:.15mm; color:var(--blue); white-space:nowrap; }
+  .wordmark .fz{ font-family:'Kaushan Script',cursive; font-size:5.6mm; color:var(--blue-dk); margin-top:.4mm; display:block; }
+
+  .main{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding-bottom:1mm; }
+  .rule{ width:64mm; height:.35mm; background:var(--blue-dk); margin:2.2mm 0 0; }
+
+  .product{ font-family:'Tinos',serif; font-weight:700; color:var(--blue-dk); font-size:7.4mm; line-height:1; text-align:center; }
+  .ptype{ font-size:2.45mm; font-weight:700; letter-spacing:.55mm; text-transform:uppercase; color:var(--orange); margin-top:1.2mm; }
+
+  .analysis{ display:flex; gap:1.6mm; margin-top:2.3mm; }
+  .nut{ width:12.5mm; border:.35mm solid var(--blue); border-radius:1.4mm; overflow:hidden; text-align:center; }
+  .nut .k{ background:var(--blue); color:#fff; font-size:2.5mm; font-weight:800; padding:.5mm 0; }
+  .nut .v{ font-size:4.4mm; font-weight:800; color:var(--ink); padding:.6mm 0 .5mm; }
+  .nut.wide{ width:auto; min-width:24mm; padding:0 1mm; }
+  .nut.wide .k{ margin:0 -1mm; }
+  .formula{ font-size:3.3mm; font-weight:700; color:var(--ink); }
+
+  .footer{ position:absolute; left:0; right:0; bottom:3.4mm; display:flex; align-items:center; justify-content:space-between; padding:0 6mm 0 26mm; }
+  .fields{ font-size:2.15mm; font-weight:600; color:var(--grey); line-height:1.55; }
+  .fields span{ display:inline-block; width:15mm; border-bottom:.2mm solid #9aa5b1; margin-left:.8mm; }
+  .tag{ background:var(--orange); color:#fff; font-weight:800; font-size:2.15mm; letter-spacing:.3mm; padding:.9mm 2.2mm; border-radius:5mm; text-transform:uppercase; white-space:nowrap; }
+
+  .blankline{ display:inline-block; width:52mm; border-bottom:.3mm solid var(--blue-dk); height:6mm; }
+
+  /* Preview mode (single label, used for PNG export) */
+  body.export .label{ outline:none; }
+</style>
+</head>
+<body>
+
+<!-- Reusable SVG symbols -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Logo: approximation of the UCF "H" ring mark -->
+    <symbol id="ucf-logo" viewBox="0 0 200 175">
+      <!-- blue ring (open at top-left) -->
+      <path d="M78 22 A64 64 0 1 1 46 46" fill="none" stroke="#1f6fb8" stroke-width="9" stroke-linecap="round"/>
+      <!-- inner thinner swoosh -->
+      <path d="M150 120 A58 58 0 0 1 64 134" fill="none" stroke="#1f6fb8" stroke-width="5" stroke-linecap="round"/>
+      <!-- orange horizon swoosh -->
+      <path d="M22 128 Q100 92 178 128 Q100 108 22 128 Z" fill="#f39a1e"/>
+      <!-- orange outline H (offset) -->
+      <path d="M78 40 h18 v26 h22 v-26 h18 v74 h-18 v-30 h-22 v30 h-18 Z" fill="none" stroke="#f39a1e" stroke-width="3.2" stroke-linejoin="round" transform="translate(9 -7)"/>
+      <!-- blue H -->
+      <path d="M72 46 h20 v27 h20 v-27 h20 v70 h-20 v-27 h-20 v27 h-20 Z" fill="#1f6fb8"/>
+      <!-- red dot -->
+      <circle cx="58" cy="28" r="6" fill="#e2463b"/>
+    </symbol>
+
+    <!-- Label background swooshes (matches business-card style) -->
+    <symbol id="label-bg" viewBox="0 0 1000 750" preserveAspectRatio="none">
+      <!-- top-right -->
+      <path d="M520 0 H1000 V170 C930 70 760 18 520 0 Z" fill="#f39a1e"/>
+      <path d="M640 0 H1000 V120 C935 50 820 10 640 0 Z" fill="#1f6fb8"/>
+      <!-- bottom-left -->
+      <path d="M0 560 C35 660 130 725 300 750 H0 Z" fill="#f39a1e"/>
+      <path d="M0 620 C40 695 115 735 205 750 H0 Z" fill="#1f6fb8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+if (location.hash==='#export') document.body.classList.add('export');
+const PRODUCTS = [
+  { id:'gypsum', name:'Agricultural Gypsum', short:'AG', fs:'6.4mm', type:'Soil Conditioner · Calcium & Sulphur',
+    analysis:{ formula:'CaSO₄·2H₂O', chips:[['Ca','Calcium'],['S','Sulphur']] } },
+  { id:'comp-d', name:'Compound D', type:'Basal Fertilizer', npk:['7','14','7'] },
+  { id:'comp-c', name:'Compound C', type:'Basal Fertilizer', npk:['6','15','12'] },
+  { id:'can',    name:'CAN', sub:'Calcium Ammonium Nitrate', type:'Top Dressing', n:'27%' },
+  { id:'lan',    name:'LAN', sub:'Limestone Ammonium Nitrate', type:'Top Dressing', n:'28%' },
+  { id:'blank',  blank:true }
+];
+
+function analysisHTML(p){
+  if (p.npk) return `<div class="analysis">${['N','P','K'].map((k,i)=>
+      `<div class="nut"><div class="k">${k}</div><div class="v">${p.npk[i]}</div></div>`).join('')}</div>`;
+  if (p.n) return `<div class="analysis"><div class="nut wide"><div class="k">NITROGEN&nbsp;(N)</div><div class="v">${p.n}</div></div></div>`;
+  if (p.analysis) return `<div class="analysis" style="align-items:center">
+      ${p.analysis.chips.map(([k,l])=>`<div class="nut wide" style="min-width:17mm"><div class="k">${k}</div><div class="v" style="font-size:2.7mm;padding:1.1mm 0">${l}</div></div>`).join('')}
+      <div class="formula" style="margin-left:1.2mm">${p.analysis.formula}</div></div>`;
+  return '';
+}
+
+function labelHTML(p){
+  const head = `
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 200 175"><use href="#ucf-logo"/></svg>
+      <div class="wordmark"><div class="uc">UNITED CAPITAL</div><span class="fz">Fertilizer</span></div>
+    </div>
+    <div class="rule"></div>`;
+  const body = p.blank ? `
+      <div class="ptype" style="margin-top:0">Product</div>
+      <div class="blankline"></div>
+      <div class="ptype" style="margin-top:2.6mm">Analysis</div>
+      <div class="blankline"></div>`
+    : `<div class="product"${p.fs?` style="font-size:${p.fs}"`:''}>${p.name}${p.short?` <span style="font-size:4.6mm">${p.short}</span>`:''}</div>
+       ${p.sub?`<div style="font-size:2.5mm;font-weight:600;color:var(--grey);margin-top:.9mm">${p.sub}</div>`:''}
+       <div class="ptype">${p.type}</div>
+       ${analysisHTML(p)}`;
+  return `<div class="label" id="label-${p.id}">
+      <svg class="bg" preserveAspectRatio="none"><use href="#label-bg"/></svg>
+      <div class="content">${head}<div class="main">${body}</div></div>
+      <div class="footer">
+        <div class="fields">Batch No.<span></span><br>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span></span></div>
+        <div class="tag">Sample · Not for Sale</div>
+      </div>
+    </div>`;
+}
+
+document.getElementById('sheet').innerHTML = PRODUCTS.map(labelHTML).join('');
+</script>
+</body>
+</html>
