@@ -40,9 +40,7 @@
   .nut.wide .k{ margin:0 -1mm; }
   .formula{ font-size:3.3mm; font-weight:700; color:var(--ink); }
 
-  .footer{ position:absolute; left:0; right:0; bottom:3.4mm; display:flex; align-items:center; justify-content:space-between; padding:0 6mm 0 26mm; }
-  .fields{ font-size:2.15mm; font-weight:600; color:var(--grey); line-height:1.55; }
-  .fields span{ display:inline-block; width:15mm; border-bottom:.2mm solid #9aa5b1; margin-left:.8mm; }
+  .footer{ position:absolute; left:0; right:0; bottom:3.4mm; display:flex; align-items:center; justify-content:center; padding:0; }
   .tag{ background:var(--orange); color:#fff; font-weight:800; font-size:2.15mm; letter-spacing:.3mm; padding:.9mm 2.2mm; border-radius:5mm; text-transform:uppercase; white-space:nowrap; }
 
   .blankline{ display:inline-block; width:52mm; border-bottom:.3mm solid var(--blue-dk); height:6mm; }
@@ -112,7 +110,6 @@ function labelHTML(p){
       <svg class="bg" preserveAspectRatio="none"><use href="#label-bg"/></svg>
       <div class="content">${head}<div class="main">${body}</div></div>
       <div class="footer">
-        <div class="fields">Batch No.<span></span><br>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span></span></div>
         <div class="tag">Sample · Not for Sale</div>
       </div>
     </div>`;
