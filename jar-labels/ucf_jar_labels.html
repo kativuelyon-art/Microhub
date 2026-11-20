@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Kaushan+Script&family=Tinos:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --blue:#1f6fb8; --blue-dk:#174f86; --orange:#f39a1e; --red:#e2463b; --ink:#1d3557; --grey:#6b7785;
+    --blue:#2763a6; --blue-dk:#1f5592; --orange:#e8983a; --red:#e2463b; --ink:#1d3557; --grey:#6b7785;
   }
   @page{ size:A4; margin:0; }
   *{ box-sizing:border-box; margin:0; padding:0; }
@@ -23,10 +23,8 @@
   .label .content{ position:absolute; inset:0; padding:4.2mm 6mm 12mm; display:flex; flex-direction:column; align-items:center; }
 
   .brand{ display:flex; align-items:center; gap:2.6mm; margin-top:.4mm; }
-  .brand svg.logo{ width:17mm; height:auto; flex:none; }
-  .wordmark{ line-height:1; text-align:left; }
-  .wordmark .uc{ font-weight:800; font-size:4.3mm; letter-spacing:.15mm; color:var(--blue); white-space:nowrap; }
-  .wordmark .fz{ font-family:'Kaushan Script',cursive; font-size:5.6mm; color:var(--blue-dk); margin-top:.4mm; display:block; }
+  .brand img.logo{ height:15.5mm; width:auto; flex:none; }
+  .brand img.wordmark{ width:42mm; height:auto; }
 
   .main{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding-bottom:1mm; }
   .rule{ width:64mm; height:.35mm; background:var(--blue-dk); margin:2.2mm 0 0; }
@@ -58,30 +56,14 @@
 <!-- Reusable SVG symbols -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
-    <!-- Logo: approximation of the UCF "H" ring mark -->
-    <symbol id="ucf-logo" viewBox="0 0 200 175">
-      <!-- blue ring (open at top-left) -->
-      <path d="M78 22 A64 64 0 1 1 46 46" fill="none" stroke="#1f6fb8" stroke-width="9" stroke-linecap="round"/>
-      <!-- inner thinner swoosh -->
-      <path d="M150 120 A58 58 0 0 1 64 134" fill="none" stroke="#1f6fb8" stroke-width="5" stroke-linecap="round"/>
-      <!-- orange horizon swoosh -->
-      <path d="M22 128 Q100 92 178 128 Q100 108 22 128 Z" fill="#f39a1e"/>
-      <!-- orange outline H (offset) -->
-      <path d="M78 40 h18 v26 h22 v-26 h18 v74 h-18 v-30 h-22 v30 h-18 Z" fill="none" stroke="#f39a1e" stroke-width="3.2" stroke-linejoin="round" transform="translate(9 -7)"/>
-      <!-- blue H -->
-      <path d="M72 46 h20 v27 h20 v-27 h20 v70 h-20 v-27 h-20 v27 h-20 Z" fill="#1f6fb8"/>
-      <!-- red dot -->
-      <circle cx="58" cy="28" r="6" fill="#e2463b"/>
-    </symbol>
-
     <!-- Label background swooshes (matches business-card style) -->
     <symbol id="label-bg" viewBox="0 0 1000 750" preserveAspectRatio="none">
       <!-- top-right -->
-      <path d="M520 0 H1000 V170 C930 70 760 18 520 0 Z" fill="#f39a1e"/>
-      <path d="M640 0 H1000 V120 C935 50 820 10 640 0 Z" fill="#1f6fb8"/>
+      <path d="M520 0 H1000 V170 C930 70 760 18 520 0 Z" fill="#e8983a"/>
+      <path d="M640 0 H1000 V120 C935 50 820 10 640 0 Z" fill="#2763a6"/>
       <!-- bottom-left -->
-      <path d="M0 560 C35 660 130 725 300 750 H0 Z" fill="#f39a1e"/>
-      <path d="M0 620 C40 695 115 735 205 750 H0 Z" fill="#1f6fb8"/>
+      <path d="M0 560 C35 660 130 725 300 750 H0 Z" fill="#e8983a"/>
+      <path d="M0 620 C40 695 115 735 205 750 H0 Z" fill="#2763a6"/>
     </symbol>
   </defs>
 </svg>
@@ -113,8 +95,8 @@ function analysisHTML(p){
 function labelHTML(p){
   const head = `
     <div class="brand">
-      <svg class="logo" viewBox="0 0 200 175"><use href="#ucf-logo"/></svg>
-      <div class="wordmark"><div class="uc">UNITED CAPITAL</div><span class="fz">Fertilizer</span></div>
+      <img class="logo" src="assets/ucf_logo_mark.png" alt="United Capital Fertilizer logo">
+      <img class="wordmark" src="assets/ucf_logo_wordmark.png" alt="United Capital Fertilizer">
     </div>
     <div class="rule"></div>`;
   const body = p.blank ? `
