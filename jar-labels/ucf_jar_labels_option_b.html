@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>United Capital Fertilizer – Sample Jar Labels (Option B)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --blue:#2763a6; --blue-dk:#1d4f88; --navy:#173f6e; --orange:#e8983a; --ink:#1d3557; }
+  @page{ size:A4; margin:0; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Montserrat',Arial,sans-serif; background:#e9edf2; color:var(--ink); }
+  .sheet{ width:210mm; height:297mm; background:#fff; margin:0 auto; padding:18mm 5mm;
+          display:grid; grid-template-columns:100mm 100mm; grid-auto-rows:75mm; gap:6mm 0; justify-content:center; align-content:start; }
+  @media screen{ .sheet{ margin:24px auto; box-shadow:0 6px 30px rgba(0,0,0,.15); } }
+
+  .label{ position:relative; width:100mm; height:75mm; overflow:hidden; background:#fff; outline:0.2mm dashed #c4ccd6; }
+  body.export .label{ outline:none; }
+
+  /* curved blue panel */
+  .panel{ position:absolute; inset:0; width:100%; height:100%; }
+
+  .left{ position:absolute; left:0; top:0; bottom:0; width:40mm; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 3mm 0 4mm; }
+  .left img{ width:31mm; height:auto; }
+  .left .site{ margin-top:3mm; font-size:1.9mm; font-weight:700; letter-spacing:.5mm; color:var(--blue); text-transform:uppercase; text-align:center; }
+
+  .right{ position:absolute; left:45mm; right:0; top:0; bottom:0; padding:0 4.5mm 0 3mm; color:#fff;
+          display:flex; flex-direction:column; justify-content:center; }
+  .ptype{ font-size:2.3mm; font-weight:700; letter-spacing:.55mm; text-transform:uppercase; color:var(--orange); }
+  .product{ white-space:normal; font-weight:900; font-size:7.4mm; line-height:1.02; margin-top:1.4mm; text-transform:uppercase; letter-spacing:.1mm; }
+  .sub{ font-size:2.35mm; font-weight:500; opacity:.85; margin-top:1mm; }
+  .bar{ width:12mm; height:.7mm; background:var(--orange); border-radius:1mm; margin:2.6mm 0 2.8mm; }
+
+  .analysis{ display:flex; gap:2.2mm; align-items:center; }
+  .dot{ width:11.5mm; height:11.5mm; border-radius:50%; background:#fff; border:.7mm solid var(--orange);
+        display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--navy); line-height:1; }
+  .dot b{ font-size:4.1mm; font-weight:900; }
+  .dot i{ font-style:normal; font-size:1.9mm; font-weight:800; color:var(--blue); margin-top:.4mm; }
+  .dot.lg{ width:15mm; height:15mm; } .dot.lg b{ font-size:4.4mm; }
+  .formula{ font-size:2.9mm; font-weight:700; margin-left:.5mm; }
+
+  .tag{ position:absolute; right:4.5mm; bottom:3.6mm; font-size:1.95mm; font-weight:800; letter-spacing:.45mm; text-transform:uppercase; color:#fff;
+        display:flex; align-items:center; gap:1.5mm; opacity:.95; }
+  .tag:before{ content:''; width:5mm; height:.3mm; background:var(--orange); }
+
+  .blankline{ display:block; width:44mm; border-bottom:.3mm solid rgba(255,255,255,.8); height:6.5mm; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="panel" viewBox="0 0 1000 750" preserveAspectRatio="none">
+      <!-- orange arc echoing the logo's horizon swoosh -->
+      <path d="M455 0 C385 200 385 550 455 750 H1000 V0 Z" fill="#e8983a"/>
+      <!-- main blue panel -->
+      <path d="M480 0 C412 200 412 550 480 750 H1000 V0 Z" fill="#2763a6"/>
+      <!-- subtle depth -->
+      <path d="M1000 470 C860 560 760 660 720 750 H1000 Z" fill="#1d4f88" opacity=".55"/>
+      <circle cx="930" cy="80" r="150" fill="#ffffff" opacity=".05"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+if (location.hash==='#export') document.body.classList.add('export');
+const PRODUCTS = [
+  { id:'gypsum', name:'Agricultural Gypsum', fs:'5.6mm', type:'Soil Conditioner', sub:'Calcium & Sulphur source',
+    gyp:true },
+  { id:'comp-d', name:'Compound D', fs:'6.3mm;white-space:nowrap', type:'Basal Fertilizer', npk:['7','14','7'] },
+  { id:'comp-c', name:'Compound C', fs:'6.3mm;white-space:nowrap', type:'Basal Fertilizer', npk:['6','15','12'] },
+  { id:'can',    name:'CAN', type:'Top Dressing', sub:'Calcium Ammonium Nitrate', n:'27%' },
+  { id:'lan',    name:'LAN', type:'Top Dressing', sub:'Limestone Ammonium Nitrate', n:'28%' },
+  { id:'blank',  blank:true }
+];
+function analysis(p){
+  if (p.npk) return `<div class="analysis">${['N','P','K'].map((k,i)=>`<div class="dot"><b>${p.npk[i]}</b><i>${k}</i></div>`).join('')}</div>`;
+  if (p.n)   return `<div class="analysis"><div class="dot lg"><b>${p.n}</b><i>N</i></div><div class="formula" style="font-weight:600;font-size:2.4mm;opacity:.9">Nitrogen</div></div>`;
+  if (p.gyp) return `<div class="analysis"><div class="dot"><b style="font-size:3.6mm">Ca</b></div><div class="dot"><b style="font-size:3.6mm">S</b></div><div class="formula">CaSO₄·2H₂O</div></div>`;
+  return '';
+}
+function label(p){
+  const body = p.blank
+    ? `<div class="ptype">Product</div><span class="blankline"></span><div class="ptype" style="margin-top:3mm">Analysis</div><span class="blankline"></span>`
+    : `<div class="ptype">${p.type}</div>
+       <div class="product"${p.fs?` style="font-size:${p.fs}"`:''}>${p.name}</div>
+       ${p.sub?`<div class="sub">${p.sub}</div>`:''}
+       <div class="bar"></div>${analysis(p)}`;
+  return `<div class="label" id="label-${p.id}">
+    <svg class="panel" preserveAspectRatio="none"><use href="#panel"/></svg>
+    <div class="left"><img src="assets/ucf_logo_full.png" alt="United Capital Fertilizer"></div>
+    <div class="right">${body}</div>
+    <div class="tag">Sample · Not for Sale</div>
+  </div>`;
+}
+document.getElementById('sheet').innerHTML = PRODUCTS.map(label).join('');
+</script>
+</body>
+</html>
