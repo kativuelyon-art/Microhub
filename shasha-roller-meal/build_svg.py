@@ -278,78 +278,83 @@ def _crest(cx, cy):
     return "".join(out)
 
 
-def logo(cx=200, cy=171, standalone=False):
-    out = [f'<g id="central-millers-logo" transform="translate({cx - 200} {cy - 171})">']
-    # oval
-    out.append(f'<ellipse cx="200" cy="171" rx="80" ry="42" fill="{CYAN}" '
-               f'stroke="{WHITE}" stroke-width="2.6"/>')
-    # star points emerging left and right of the cartouche
-    out.append(f'<path d="M163.5,155.5 L149,169.4 L163.5,171 Z M236.5,155.5 L251,169.4 L236.5,171 Z" fill="{WHITE}"/>')
-    # wheat (lower left): two ears, stems crossed
-    out.append(f'<g stroke="{WHITE}" stroke-width="0.55" stroke-linecap="round">'
-               f'<line x1="141" y1="185.5" x2="157" y2="195.5"/>'
-               f'<line x1="154" y1="183.5" x2="150.5" y2="196"/></g>')
-    out.append(_wheat_ear(141, 185.5, 132, 171.5, 6))
-    out.append(_wheat_ear(154, 183.5, 147.5, 168.5, 6))
-    # maize cob (lower right)
-    out.append(_maize())
-    # spears at the four frame corners
-    for (x, y, a) in ((172, 148, -125), (228, 148, -55), (172, 190, 125), (228, 190, 55)):
-        out.append(_spear(x, y, a))
-    # cartouche frame (barrel sides, notched corners)
-    r = 3.5
-    frame = (f"M{172 + r},148 L{228 - r},148 A{r},{r} 0 0 0 228,{148 + r} "
-             f"C239,156 239,182 228,{190 - r} A{r},{r} 0 0 0 {228 - r},190 "
-             f"Q200,197 {172 + r},190 A{r},{r} 0 0 0 172,{190 - r} "
-             f"C161,182 161,156 172,{148 + r} A{r},{r} 0 0 0 {172 + r},148 Z")
-    out.append(f'<path d="{frame}" fill="{CYAN}" stroke="{WHITE}" stroke-width="1.9" stroke-linejoin="round"/>')
-    out.append(_crest(200, 146.6))
-    # CENTRAL + flourish
-    out.append(f'<path d="{text_d(DJB, "CENTRAL", 200, 155.7, 5.8, width=37, tracking=0.14)}" fill="{WHITE}"/>')
-    out.append(_scroll(200, 159.0, 22, 2.2))
-    # ribbon: tails, folds, body
-    for s in (-1, 1):
-        x0 = 200 + s * 34          # inner end of tail (behind body)
-        x1 = 200 + s * 40.5          # outer tip of tail
-        out.append(f'<path d="M{x0},{165.5} L{x1},{166} L{x1 - s * 2.4},{171.3} L{x1},{177} L{x0},{177} Z" '
-                   f'fill="{WHITE}"/>')
-        out.append(f'<path d="M{200 + s * 37},{174.3} L{x0},{177} L{x0},{174.3} Z" fill="#BFE6F6"/>')
-    out.append(f'<path d="M163,162.8 Q200,159.6 237,162.8 L237,174.6 Q200,171.6 163,174.6 Z" '
-               f'fill="{CYAN}" stroke="{WHITE}" stroke-width="1.3" stroke-linejoin="round"/>')
-    out.append(f'<path d="{text_d(ARVO, "PREMIUM GRAIN MILLING", 200, 171.4, 7.6, width=66, tracking=0.02)}" '
-               f'fill="{WHITE}"/>')
-    # MILLERS
-    out.append(f'<path d="{text_d(DJB, "MILLERS", 200, 189.0, 10.2, width=43, tracking=0.06)}" fill="{WHITE}"/>')
+# ---- traced artwork (see trace_logo.py) ------------------------------------
+import json as _json
+import re as _re
+
+TR = os.path.join(HERE, "trace")
+POPPINS = Font(os.path.join(FD, "Poppins-Medium.ttf"))
+ABRIL = Font(os.path.join(FD, "AbrilFatface-Regular.ttf"))
+
+
+def _potrace_group(name, fill):
+    svg = open(os.path.join(TR, name + ".svg")).read()
+    tf = _re.search(r'<g transform="([^"]+)"', svg).group(1)
+    d = " ".join(_re.findall(r'<path d="([^"]+)"', svg, _re.S)).replace("\n", " ")
+    return f'<g transform="{tf}"><path d="{d}" fill="{fill}"/></g>'
+
+
+def logo(cx=200, cy=168, rx=74.0):
+    """Central Premium Grain Milling Millers logo, traced from the reference photo.
+    Artwork = potrace of the photo; lettering re-set at the measured positions."""
+    L = _json.load(open(os.path.join(TR, "layout.json")))
+    e = L["ellipse"]
+    k = rx / e["a"]                         # photo px -> mm
+    ry = e["b"] * k
+    tx, ty = cx - e["cx"] * k, cy - e["cy"] * k
+
+    def box(b):                             # px box -> mm (x0,y0,x1,y1)
+        return [tx + b[0] * k, ty + b[1] * k, tx + b[2] * k, ty + b[3] * k]
+
+    out = ['<g id="central-millers-logo">',
+           f'<ellipse cx="{cx}" cy="{cy}" rx="{rx + 1.3:.2f}" ry="{ry + 1.3:.2f}" fill="{CYAN}" '
+           f'stroke="{WHITE}" stroke-width="2.6"/>',
+           f'<g id="logo-artwork" transform="translate({tx:.3f} {ty:.3f}) scale({k:.6f})">',
+           _potrace_group("logo_art", WHITE), '</g>']
+
+    def fit(font, text, b, fill, tracking=0.0, vscale=1.0):
+        x0, y0, x1, y1 = box(b)
+        if vscale != 1.0:
+            m = (y1 - y0) * (1 - vscale) / 2
+            y0, y1 = y0 + m, y1 - m
+        return (f'<path d="{text_d(font, text, (x0 + x1) / 2, y1, y1 - y0, width=x1 - x0, tracking=tracking)}" '
+                f'fill="{fill}"/>')
+
+    for key, fn, sc in (("CREST", _crest, 0.85), ("SCROLL", _scroll, 0.95)):
+        ox, oy = tx + L[key][0] * k, ty + L[key][1] * k
+        g = fn(0, 0) if fn is _crest else fn(0, 0, 13, 2.4)
+        out.append(f'<g transform="translate({ox:.2f} {oy:.2f}) scale({sc})">{g}</g>')
+    out.append(fit(POPPINS, "CENTRAL", L["CENTRAL"][0], WHITE, 0.10))
+    out.append(fit(POPPINS, "MILLERS", L["MILLERS"][0], WHITE, 0.06))
+    rb = L["RIBBON"]
+    if len(rb) == 3:
+        words = ["PREMIUM", "GRAIN", "MILLING"]
+    elif len(rb) == 2:
+        words = ["PREMIUM GRAIN", "MILLING"]
+    else:
+        words = ["PREMIUM GRAIN MILLING"]
+        rb = [[min(b[0] for b in rb), min(b[1] for b in rb), max(b[2] for b in rb), max(b[3] for b in rb)]]
+    for wd, b in zip(words, rb):
+        out.append(fit(ANTON, wd, b, CYAN, 0.03, vscale=0.84))
     out.append('</g>')
     return "\n".join(out)
 
 
 def standalone_logo():
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="170mm" height="92mm" viewBox="115 125 170 92">'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="156mm" height="100mm" viewBox="122 118 156 100">'
             '<title>Central Premium Grain Milling Millers - logo (vector)</title>\n'
             + logo() + '\n</svg>')
 
 
-
 # ---------------------------------------------------------------- badges & icons
 def proudly_zimbabwean(cx, cy, r=13):
-    out = ['<g id="proudly-zimbabwean">',
-           f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{WHITE}"/>',
-           f'<circle cx="{cx}" cy="{cy}" r="{r - 0.9}" fill="none" stroke="{NAVY}" stroke-width="0.5"/>',
-           f'<path d="{arc_text_d(ANTON, "ZIMBABWEAN", cx, cy, r - 3.6, 2.4, top=True, tracking=0.12)}" '
-           f'fill="{NAVY}" transform="rotate(-62 {cx} {cy})"/>',
-           f'<path d="{arc_text_d(ANTON, "PROUDLY", cx, cy, r - 3.6, 2.4, top=True, tracking=0.12)}" '
-           f'fill="{NAVY}" transform="rotate(68 {cx} {cy})"/>',
-           f'<circle cx="{cx}" cy="{cy - r + 2.2}" r="0.5" fill="{NAVY}"/>',
-           f'<circle cx="{cx}" cy="{cy + r - 2.2}" r="0.5" fill="{NAVY}"/>',
-           f'<polygon points="{star(cx + 0.5, cy - 0.5, 6.6, 2.8)}" fill="{WHITE}" '
-           f'stroke="{NAVY}" stroke-width="0.7" stroke-linejoin="round"/>',
-           # stylised bird over the star
-           f'<path d="M{cx - 3.6},{cy + 4.2} C{cx - 4.5},{cy + 0.5} {cx - 2.6},{cy - 2.5} {cx - 0.3},{cy - 3.4} '
-           f'L{cx + 1.8},{cy - 5.2} L{cx + 1.6},{cy - 3.0} C{cx + 3.4},{cy - 1.5} {cx + 2.6},{cy + 1.8} '
-           f'{cx + 0.6},{cy + 3.0} L{cx + 2.4},{cy + 5.4} L{cx - 3.6},{cy + 5.4} Z" fill="{NAVY}"/>',
-           '</g>']
-    return "\n".join(out)
+    """Proudly Zimbabwean badge, traced from the reference photo (white artwork;
+    lettering and inner disc show the navy panel through)."""
+    B = _json.load(open(os.path.join(TR, "badge.json")))
+    k = r / (B["r"] - 10)
+    return (f'<g id="proudly-zimbabwean" transform="translate({cx - B["cx"] * k:.3f} {cy - B["cy"] * k:.3f}) '
+            f'scale({k:.6f})">' + _potrace_group("badge_art", WHITE) + '</g>')
+
 
 
 def recycle_icon(cx, cy, label):
@@ -415,7 +420,7 @@ def build():
              f'fill="none" stroke="{NAVY}" stroke-width="0.6"/>')
     s.append('</g>')
 
-    s.append(logo(200, 171))
+    s.append(logo())
 
     # main typography
     s.append('<g id="typography">')
