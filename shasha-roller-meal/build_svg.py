@@ -173,6 +173,12 @@ def barcode(x, y):
 
 
 # ---------------------------------------------------------------- logo
+# Central Premium Grain Milling Millers logo, redrawn from the close-up photo.
+# Drawn in absolute bag coordinates for an oval centred at (200, 171);
+# logo(cx, cy) shifts it anywhere.
+DJB = Font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
+
+
 def star(cx, cy, ro, ri, n=5, rot=-90):
     pts = []
     for k in range(n * 2):
@@ -182,110 +188,147 @@ def star(cx, cy, ro, ri, n=5, rot=-90):
     return " ".join(pts)
 
 
-def spear(cx, cy, ang_deg, r0, r1):
+def _spear(x, y, ang_deg):
+    """Spear/arrow head on a stack of beads, attached to a frame corner."""
     a = math.radians(ang_deg)
     ux, uy = math.cos(a), math.sin(a)
     px, py = -uy, ux
-    x0, y0 = cx + ux * r0, cy + uy * r0
-    x1, y1 = cx + ux * r1, cy + uy * r1
-    tl = 6.5          # blade length
-    tw = 2.4          # blade half-width
-    bx, by = x1 - ux * tl, y1 - uy * tl
-    blade = (f"{x1:.2f},{y1:.2f} {bx + px * tw - ux * 1.5:.2f},{by + py * tw - uy * 1.5:.2f} "
-             f"{bx - ux * 1.2:.2f},{by - uy * 1.2:.2f} "
-             f"{bx - px * tw - ux * 1.5:.2f},{by - py * tw - uy * 1.5:.2f}")
-    kx, ky = x0 + ux * 3.0, y0 + uy * 3.0
-    return (f'<line x1="{x0:.2f}" y1="{y0:.2f}" x2="{bx:.2f}" y2="{by:.2f}" '
-            f'stroke="{WHITE}" stroke-width="1.3" stroke-linecap="round"/>'
-            f'<polygon points="{blade}" fill="{WHITE}"/>'
-            f'<circle cx="{kx:.2f}" cy="{ky:.2f}" r="1.3" fill="{WHITE}"/>')
+    out = []
+    for d, r in ((1.6, 1.45), (4.1, 1.25), (6.2, 0.95)):
+        out.append(f'<circle cx="{x + ux * d:.2f}" cy="{y + uy * d:.2f}" r="{r}" fill="{WHITE}"/>')
+    b0, b1, wmax = 7.2, 17.5, 1.9
+    bx, by = x + ux * b0, y + uy * b0
+    tx, ty = x + ux * b1, y + uy * b1
+    m = b0 + (b1 - b0) * 0.42
+    mx, my = x + ux * m, y + uy * m
+    out.append(
+        f'<path d="M{bx:.2f},{by:.2f} '
+        f'Q{mx + px * wmax * 2:.2f},{my + py * wmax * 2:.2f} {tx:.2f},{ty:.2f} '
+        f'Q{mx - px * wmax * 2:.2f},{my - py * wmax * 2:.2f} {bx:.2f},{by:.2f} Z" fill="{WHITE}"/>')
+    # thin rib down the blade (cyan)
+    out.append(f'<line x1="{bx + ux * 1.5:.2f}" y1="{by + uy * 1.5:.2f}" x2="{tx - ux * 2:.2f}" '
+               f'y2="{ty - uy * 2:.2f}" stroke="{CYAN}" stroke-width="0.35"/>')
+    return "".join(out)
 
 
-def wheat(x, y, ang):
-    g = [f'<g transform="translate({x} {y}) rotate({ang})" fill="{WHITE}" stroke="{WHITE}">']
-    for off, ln in ((-2.6, 15), (0, 17), (2.6, 14)):
-        g.append(f'<path d="M{off * 0.4:.2f},0 Q{off:.2f},{-ln * 0.5:.2f} {off:.2f},{-ln:.2f}" '
-                 f'fill="none" stroke-width="0.6"/>')
-        for k in range(5):
-            yy = -ln + 1.5 + k * 1.9
-            g.append(f'<ellipse cx="{off - 1.0:.2f}" cy="{yy:.2f}" rx="0.65" ry="1.25" '
-                     f'transform="rotate(-28 {off - 1.0:.2f} {yy:.2f})" stroke="none"/>')
-            g.append(f'<ellipse cx="{off + 1.0:.2f}" cy="{yy:.2f}" rx="0.65" ry="1.25" '
-                     f'transform="rotate(28 {off + 1.0:.2f} {yy:.2f})" stroke="none"/>')
-        g.append(f'<ellipse cx="{off:.2f}" cy="{-ln - 0.4:.2f}" rx="0.6" ry="1.3" stroke="none"/>')
-    g.append("</g>")
+def _wheat_ear(bx, by, tx, ty, n=6):
+    ang = math.degrees(math.atan2(tx - bx, -(ty - by)))  # rotation from "up"
+    L = math.hypot(tx - bx, ty - by)
+    g = [f'<g transform="translate({bx} {by}) rotate({ang:.2f})" fill="{WHITE}">']
+    for k in range(n):
+        yy = -1.2 - k * (L - 2.4) / n
+        s = 1.0 - k * 0.06
+        for side in (-1, 1):
+            g.append(f'<ellipse cx="{side * 1.15 * s:.2f}" cy="{yy:.2f}" rx="{0.85 * s:.2f}" '
+                     f'ry="{1.55 * s:.2f}" transform="rotate({side * 30} {side * 1.15 * s:.2f} {yy:.2f})"/>')
+    g.append(f'<ellipse cx="0" cy="{-L + 0.6:.2f}" rx="0.7" ry="1.5"/>')
+    g.append(f'<line x1="0" y1="0" x2="0" y2="{-L + 1:.2f}" stroke="{WHITE}" stroke-width="0.45"/>')
+    g.append('</g>')
     return "".join(g)
 
 
-def maize(x, y, ang):
-    g = [f'<g transform="translate({x} {y}) rotate({ang})">',
-         f'<path d="M-6,8 C-9,0 -6,-10 0,-16 C-2,-8 -3,0 -1,8 Z" fill="{WHITE}"/>',
-         f'<path d="M6,8 C9,1 7,-8 3,-13 C3,-5 3,1 1,8 Z" fill="{WHITE}"/>',
-         f'<ellipse cx="0" cy="-3" rx="3.6" ry="10" fill="{CYAN}" stroke="{WHITE}" stroke-width="0.7"/>']
-    for row in range(9):
-        yy = -11.5 + row * 2.1
-        half = 3.4 * math.sqrt(max(0.0, 1 - ((yy + 3) / 10.2) ** 2))
-        n = 3 if half > 2.2 else 2
+def _maize():
+    # local coords: base at origin, tip at (0,-26); rotated to lean up-left
+    g = [f'<g transform="translate(258 188) rotate(-37) scale(0.82)">']
+    # outer husk streaks (left)
+    g.append(f'<path d="M-1.2,1 C-10,-4 -13.5,-17 -12.5,-30 C-11,-18 -7.8,-8 0,-0.5 Z" fill="{WHITE}"/>')
+    g.append(f'<path d="M-0.6,0.4 C-6.6,-5 -8.6,-15 -7.4,-27 C-5.8,-17 -4.4,-9 0.8,-1.6 Z" fill="{WHITE}"/>')
+    # right husk with the notch at the base
+    g.append(f'<path d="M0.8,0.6 C7.5,-0.8 9.6,-6 8.4,-12.5 C7.2,-8.5 5.4,-6.6 3.2,-6.2 '
+             f'C5.2,-4.6 4.4,-2.4 0.8,-2.2 Z" fill="{WHITE}"/>')
+    # stalk stub
+    g.append(f'<path d="M-0.9,0 L0.9,0 L1.4,4.5 L-0.6,4.8 Z" fill="{WHITE}"/>')
+    # kernels
+    for row in range(12):
+        yy = -3.2 - row * 1.95
+        half = 4.1 * math.sqrt(max(0.0, 1 - ((yy + 13.5) / 13.2) ** 2))
+        n = 4 if half > 3.4 else (3 if half > 2.2 else 2)
         for c in range(n):
-            xx = -half + 0.9 + c * (2 * half - 1.8) / max(1, n - 1)
-            g.append(f'<ellipse cx="{xx:.2f}" cy="{yy:.2f}" rx="0.7" ry="0.85" fill="{WHITE}"/>')
-    g.append("</g>")
+            xx = -half + 1.0 + c * (2 * half - 2.0) / max(1, n - 1)
+            g.append(f'<ellipse cx="{xx:.2f}" cy="{yy:.2f}" rx="0.72" ry="0.82" fill="{WHITE}"/>')
+    g.append('</g>')
     return "".join(g)
 
 
-def logo(cx, cy):
-    rx, ry = 79, 52
-    out = ['<g id="central-millers-logo">',
-           f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{CYAN}" '
-           f'stroke="{WHITE}" stroke-width="3.2"/>']
-    # star behind the cartouche
-    out.append(f'<polygon points="{star(cx, cy - 2, 33, 13)}" fill="{WHITE}"/>')
-    # spears in an X behind the cartouche
-    for a in (-152, -28, 152, 28):
-        out.append(spear(cx, cy, a, 18, 52 if abs(a) < 90 else 52))
-    # wheat (lower-left) and maize (lower-right)
-    out.append(wheat(cx - 47, cy + 34, -30))
-    out.append(maize(cx + 49, cy + 28, 35))
-    # cartouche / plaque with concave corners
-    x0, y0, x1, y1, r = cx - 38, cy - 22, cx + 38, cy + 24, 7
-    plaque = (f"M{x0 + r},{y0} L{x1 - r},{y0} A{r},{r} 0 0 0 {x1},{y0 + r} "
-              f"L{x1},{y1 - r} A{r},{r} 0 0 0 {x1 - r},{y1} L{x0 + r},{y1} "
-              f"A{r},{r} 0 0 0 {x0},{y1 - r} L{x0},{y0 + r} A{r},{r} 0 0 0 {x0 + r},{y0} Z")
-    out.append(f'<path d="{plaque}" fill="{CYAN}" stroke="{WHITE}" stroke-width="1.6"/>')
-    ins = 2.6
-    x0i, y0i, x1i, y1i, ri = x0 + ins, y0 + ins, x1 - ins, y1 - ins, r
-    plaque_in = (f"M{x0i + ri},{y0i} L{x1i - ri},{y0i} A{ri},{ri} 0 0 0 {x1i},{y0i + ri} "
-                 f"L{x1i},{y1i - ri} A{ri},{ri} 0 0 0 {x1i - ri},{y1i} L{x0i + ri},{y1i} "
-                 f"A{ri},{ri} 0 0 0 {x0i},{y1i - ri} L{x0i},{y0i + ri} A{ri},{ri} 0 0 0 {x0i + ri},{y0i} Z")
-    out.append(f'<path d="{plaque_in}" fill="none" stroke="{WHITE}" stroke-width="0.5"/>')
-    for (bx, by) in ((x0, y0), (x1, y0), (x0, y1), (x1, y1)):
-        out.append(f'<circle cx="{bx}" cy="{by}" r="1.6" fill="{WHITE}"/>')
-    # CENTRAL arched
-    out.append(f'<path d="{arc_text_d(ANTON, "CENTRAL", cx, cy + 28, 41, 5.4, top=True, tracking=0.08)}" '
+def _scroll(cx, cy, w, h):
+    """Symmetric flourish: centre bead with curling scrolls either side."""
+    out = [f'<g fill="none" stroke="{WHITE}" stroke-width="0.5" stroke-linecap="round">']
+    for s in (-1, 1):
+        out.append(f'<path d="M{cx + s * 1.6:.2f},{cy:.2f} '
+                   f'C{cx + s * w * 0.25:.2f},{cy - h * 0.9:.2f} {cx + s * w * 0.4:.2f},{cy + h * 0.9:.2f} '
+                   f'{cx + s * w * 0.5:.2f},{cy:.2f}"/>')
+        out.append(f'<circle cx="{cx + s * w * 0.5 - s * 0.7:.2f}" cy="{cy - 0.5:.2f}" r="0.6"/>')
+    out.append('</g>')
+    out.append(f'<ellipse cx="{cx}" cy="{cy}" rx="1.3" ry="1.0" fill="none" stroke="{WHITE}" stroke-width="0.5"/>'
+               f'<circle cx="{cx}" cy="{cy}" r="0.45" fill="{WHITE}"/>')
+    return "".join(out)
+
+
+def _crest(cx, cy):
+    """Ornament sitting on the frame's top edge: o-(O)-o with end curls."""
+    out = [f'<g stroke="{WHITE}" fill="none" stroke-width="0.55" stroke-linecap="round">',
+           f'<line x1="{cx - 11}" y1="{cy}" x2="{cx + 11}" y2="{cy}"/>',
+           f'<ellipse cx="{cx}" cy="{cy}" rx="1.6" ry="2.1" fill="{CYAN}"/>',
+           f'<circle cx="{cx - 4.3}" cy="{cy}" r="1.0" fill="{CYAN}"/>',
+           f'<circle cx="{cx + 4.3}" cy="{cy}" r="1.0" fill="{CYAN}"/>',
+           f'<path d="M{cx - 11},{cy} q-1.2,-1.6 0.3,-1.9"/>',
+           f'<path d="M{cx + 11},{cy} q1.2,-1.6 -0.3,-1.9"/>',
+           '</g>',
+           f'<circle cx="{cx}" cy="{cy}" r="0.5" fill="{WHITE}"/>']
+    return "".join(out)
+
+
+def logo(cx=200, cy=171, standalone=False):
+    out = [f'<g id="central-millers-logo" transform="translate({cx - 200} {cy - 171})">']
+    # oval
+    out.append(f'<ellipse cx="200" cy="171" rx="80" ry="42" fill="{CYAN}" '
+               f'stroke="{WHITE}" stroke-width="2.6"/>')
+    # star points emerging left and right of the cartouche
+    out.append(f'<path d="M163.5,155.5 L149,169.4 L163.5,171 Z M236.5,155.5 L251,169.4 L236.5,171 Z" fill="{WHITE}"/>')
+    # wheat (lower left): two ears, stems crossed
+    out.append(f'<g stroke="{WHITE}" stroke-width="0.55" stroke-linecap="round">'
+               f'<line x1="141" y1="185.5" x2="157" y2="195.5"/>'
+               f'<line x1="154" y1="183.5" x2="150.5" y2="196"/></g>')
+    out.append(_wheat_ear(141, 185.5, 132, 171.5, 6))
+    out.append(_wheat_ear(154, 183.5, 147.5, 168.5, 6))
+    # maize cob (lower right)
+    out.append(_maize())
+    # spears at the four frame corners
+    for (x, y, a) in ((172, 148, -125), (228, 148, -55), (172, 190, 125), (228, 190, 55)):
+        out.append(_spear(x, y, a))
+    # cartouche frame (barrel sides, notched corners)
+    r = 3.5
+    frame = (f"M{172 + r},148 L{228 - r},148 A{r},{r} 0 0 0 228,{148 + r} "
+             f"C239,156 239,182 228,{190 - r} A{r},{r} 0 0 0 {228 - r},190 "
+             f"Q200,197 {172 + r},190 A{r},{r} 0 0 0 172,{190 - r} "
+             f"C161,182 161,156 172,{148 + r} A{r},{r} 0 0 0 {172 + r},148 Z")
+    out.append(f'<path d="{frame}" fill="{CYAN}" stroke="{WHITE}" stroke-width="1.9" stroke-linejoin="round"/>')
+    out.append(_crest(200, 146.6))
+    # CENTRAL + flourish
+    out.append(f'<path d="{text_d(DJB, "CENTRAL", 200, 155.7, 5.8, width=37, tracking=0.14)}" fill="{WHITE}"/>')
+    out.append(_scroll(200, 159.0, 22, 2.2))
+    # ribbon: tails, folds, body
+    for s in (-1, 1):
+        x0 = 200 + s * 34          # inner end of tail (behind body)
+        x1 = 200 + s * 40.5          # outer tip of tail
+        out.append(f'<path d="M{x0},{165.5} L{x1},{166} L{x1 - s * 2.4},{171.3} L{x1},{177} L{x0},{177} Z" '
+                   f'fill="{WHITE}"/>')
+        out.append(f'<path d="M{200 + s * 37},{174.3} L{x0},{177} L{x0},{174.3} Z" fill="#BFE6F6"/>')
+    out.append(f'<path d="M163,162.8 Q200,159.6 237,162.8 L237,174.6 Q200,171.6 163,174.6 Z" '
+               f'fill="{CYAN}" stroke="{WHITE}" stroke-width="1.3" stroke-linejoin="round"/>')
+    out.append(f'<path d="{text_d(ARVO, "PREMIUM GRAIN MILLING", 200, 171.4, 7.6, width=66, tracking=0.02)}" '
                f'fill="{WHITE}"/>')
-    # small flourish
-    out.append(f'<path d="M{cx - 9},{cy - 8.5} q4.5,-3 9,0 q4.5,3 9,0" fill="none" '
-               f'stroke="{WHITE}" stroke-width="0.6"/>'
-               f'<circle cx="{cx}" cy="{cy - 8.5}" r="0.9" fill="{WHITE}"/>')
-    # ribbon banner PREMIUM GRAIN MILLING
-    rb = (f"M{cx - 44},{cy - 1} L{cx - 36},{cy - 5} L{cx + 36},{cy - 5} L{cx + 44},{cy - 1} "
-          f"L{cx + 44},{cy + 8} L{cx + 36},{cy + 4} L{cx - 36},{cy + 4} L{cx - 44},{cy + 8} Z")
-    out.append(f'<g transform="rotate(-6 {cx} {cy})">')
-    out.append(f'<path d="M{cx - 50},{cy - 3} L{cx - 42},{cy - 3} L{cx - 42},{cy + 8} '
-               f'L{cx - 50},{cy + 8} L{cx - 46},{cy + 2.5} Z" fill="{WHITE}"/>')
-    out.append(f'<path d="M{cx + 50},{cy - 3} L{cx + 42},{cy - 3} L{cx + 42},{cy + 8} '
-               f'L{cx + 50},{cy + 8} L{cx + 46},{cy + 2.5} Z" fill="{WHITE}"/>')
-    out.append(f'<path d="M{cx - 44},{cy - 5} L{cx + 44},{cy - 5} L{cx + 44},{cy + 6} '
-               f'L{cx - 44},{cy + 6} Z" fill="{WHITE}" stroke="{CYAN}" stroke-width="0.5"/>')
-    out.append(f'<path d="{text_d(ANTON, "PREMIUM GRAIN MILLING", cx, cy + 3.6, 6.4, width=80)}" '
-               f'fill="{CYAN}"/>')
-    out.append("</g>")
-    # MILLERS arched (smile)
-    out.append(f'<path d="{arc_text_d(ANTON, "MILLERS", cx, cy - 19, 40, 8.4, top=False, tracking=0.06)}" '
-               f'fill="{WHITE}"/>')
-    out.append("</g>")
-    _ = rb
+    # MILLERS
+    out.append(f'<path d="{text_d(DJB, "MILLERS", 200, 189.0, 10.2, width=43, tracking=0.06)}" fill="{WHITE}"/>')
+    out.append('</g>')
     return "\n".join(out)
+
+
+def standalone_logo():
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="170mm" height="92mm" viewBox="115 125 170 92">'
+            '<title>Central Premium Grain Milling Millers - logo (vector)</title>\n'
+            + logo() + '\n</svg>')
+
 
 
 # ---------------------------------------------------------------- badges & icons
@@ -419,4 +462,6 @@ if __name__ == "__main__":
     out = os.path.join(HERE, "shasha_roller_meal_10kg.svg")
     with open(out, "w") as fh:
         fh.write(build())
+    with open(os.path.join(HERE, "central_millers_logo.svg"), "w") as fh:
+        fh.write(standalone_logo())
     print("wrote", out, os.path.getsize(out), "bytes")
